@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Student Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        
+        h2,
+        h3 {
+            color: #333;
+        }
+        
+        form {
+            margin: 20px;
+        }
+        
+        table {
+            width: 60%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background-color: #fff;
+        }
+        
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        
+        button {
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background-color: #218838;
+        }
+        
+        select {
+            padding: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Student Dashboard</h2>
+
+        <h3>Select a Subject</h3>
+        <form method="POST">
+            <select name="subject">
+              {% for subject in subjects %}
+              <option value="{{ subject }}">{{ subject }}</option>
+              {% endfor %}
+          </select>
+            <button type="submit">Show Faculty</button>
+        </form>
+
+        {% if selected_subject %}
+        <h3>Available Faculty for {{ selected_subject }}</h3>
+        <form method="POST">
+            <input type="hidden" name="subject" value="{{ selected_subject }}">
+            <select name="course_id">
+              {% for course in faculty_list %}
+              <option value="{{ course[0] }}">{{ course[2] }} - {{ course[1] }} (Slot: {{ course[3] }})</option>
+              {% endfor %}
+          </select>
+
+            <!-- Student Details Input -->
+            <input type="text" name="student_name" placeholder="Your Name" required>
+            <input type="text" name="reg_no" placeholder="Registration Number" required>
+            <input type="email" name="email" placeholder="Your Email" required>
+
+            <button type="submit">Register</button>
+        </form>
+        {% endif %}
+
+        <h3>Your Registered Courses</h3>
+        <table>
+            <tr>
+                <th>Course Name</th>
+                <th>Faculty</th>
+                <th>Slot</th>
+                <th>Action</th>
+            </tr>
+            {% for course in registered_courses %}
+            <tr>
+                <td>{{ course[2] }}</td>
+                <td>{{ course[1] }}</td>
+                <td>{{ course[3] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <a class="logout-btn" href="{{ url_for('logout') }}">Logout</a>
+    </div>
+</body>
+
+</html>

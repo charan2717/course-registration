@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faculty Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        
+        table {
+            width: 60%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background-color: #fff;
+        }
+        
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        
+        button {
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Faculty Dashboard</h2>
+        <p>Welcome, <strong>{{ session['username'] }}</strong>!</p>
+
+        <!-- Add Course Form -->
+        <h3>Add a Course</h3>
+        <form method="POST" class="course-form">
+            <label>Faculty Name:</label>
+            <input type="text" name="faculty_name" required>
+
+            <label>Course Name:</label>
+            <input type="text" name="course_name" required>
+
+            <label>Time Slot:</label>
+            <input type="text" name="time_slot" required>
+
+            <button type="submit">Add Course</button>
+        </form>
+
+        <!-- Course List -->
+        <h3>Your Courses</h3>
+        <table>
+            <tr>
+                <th>Course Name</th>
+                <th>Time Slot</th>
+                <th>Registered Students</th>
+            </tr>
+            {% for course in courses %}
+            <tr>
+                <td>{{ course[1] }}</td>
+                <td>{{ course[2] }}</td>
+                <td>
+                    <a href="{{ url_for('view_students', course_id=course[0]) }}">
+                        <button class="view-students-btn">View Students</button>
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <a class="logout-btn" href="{{ url_for('logout') }}">Logout</a>
+    </div>
+</body>
+
+</html>
